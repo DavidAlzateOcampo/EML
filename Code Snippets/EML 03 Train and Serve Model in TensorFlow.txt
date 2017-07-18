@@ -1,0 +1,12 @@
+-- train model
+rm -rf /tmp/mnist_model
+bazel build //tensorflow_serving/example:mnist_saved_model
+bazel-bin/tensorflow_serving/example/mnist_saved_model --training_iteration=100 --model_version=1 /tmp/mnist_model
+ls /tmp/mnist_model/1
+
+-- show model config 
+saved_model_cli show --dir /tmp/mnist_model/1 --all
+
+-- serve model
+bazel build //tensorflow_serving/model_servers:tensorflow_model_server
+bazel-bin/tensorflow_serving/model_servers/tensorflow_model_server --port=9000 --model_name=mnist --model_base_path=/tmp/mnist_model/
