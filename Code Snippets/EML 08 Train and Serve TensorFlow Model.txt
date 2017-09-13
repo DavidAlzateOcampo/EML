@@ -1,0 +1,19 @@
+# activate virtual environment
+source ~/tensorflow/bin/activate
+
+# get examples
+git clone --recurse-submodules https://github.com/tensorflow/serving
+cd serving
+
+# train and save MNIST model
+https://www.tensorflow.org/serving/serving_basic
+sudo mkdir /MNIST_model
+sudo chmod 777 /MNIST_model
+python tensorflow_serving/example/mnist_saved_model.py /MNIST_model
+
+# examine saved model
+ls /MNIST_model/1
+saved_model_cli show --dir /MNIST_model/1 --all
+
+# serve MNIST model
+tensorflow_model_server --port=9000 --model_name=mnist --model_base_path=/MNIST_model/

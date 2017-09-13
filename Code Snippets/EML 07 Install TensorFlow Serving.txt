@@ -1,0 +1,45 @@
+# Ubuntu Xenial
+
+# configure Python
+https://www.tensorflow.org/install/install_linux#InstallingVirtualenv
+
+# pre-requisites
+python -V
+sudo apt-get -y update
+sudo apt-get -y install python-pip python-dev python-virtualenv
+# create & activate virtual environment
+virtualenv --system-site-packages ~/tensorflow
+source ~/tensorflow/bin/activate
+# pip
+easy_install -U pip
+pip -V
+
+# install TensorFlow
+pip install --upgrade tensorflow
+wget https://raw.githubusercontent.com/tensorflow/tensorflow/r1.3/tensorflow/examples/tutorials/mnist/mnist_softmax.py
+python mnist_softmax.py
+
+# install TensorFlow Serving
+https://www.tensorflow.org/serving/setup
+pip install grpcio
+sudo apt-get update && sudo apt-get install -y \
+        build-essential \
+        curl \
+        libcurl3-dev \
+        git \
+        libfreetype6-dev \
+        libpng12-dev \
+        libzmq3-dev \
+        pkg-config \
+        python-dev \
+        python-numpy \
+        python-pip \
+        software-properties-common \
+        swig \
+        zip \
+        zlib1g-dev
+pip install tensorflow-serving-api
+echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | sudo tee /etc/apt/sources.list.d/tensorflow-serving.list
+curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | sudo apt-key add -
+sudo apt-get -y update && sudo apt-get -y install tensorflow-model-server
+sudo apt-get -y upgrade tensorflow-model-server
