@@ -7,11 +7,9 @@ def _float_feature(value):
 from hdbcli import dbapi
 
 conn = dbapi.connect(address='0.0.0.0',databasename='HXE',port=39013,user='EMLUSER',password='...')
-
 cursor = conn.cursor()
+
 cursor.execute('CREATE TABLE "MNIST" ("Label" INTEGER, "Image" BLOB)')
-cursor.close()
-conn.commit()
 
 mnist = input_data.read_data_sets("/tmp/MNIST/", one_hot=False)
 for i in range(5):
@@ -21,9 +19,7 @@ for i in range(5):
 			feature = {'x': _float_feature(features),
 	}))
 	sql = 'INSERT INTO "MNIST" ("Label","Image") VALUES (?,?)'
-	cursor = conn.cursor()
 	cursor.execute(sql, (int(mnist.test.labels[i]), example.SerializeToString()))
-	cursor.close()
-	conn.commit()
 
+cursor.close()
 conn.close()
