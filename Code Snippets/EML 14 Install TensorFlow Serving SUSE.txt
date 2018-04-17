@@ -14,6 +14,7 @@ zypper install python-devel
 zypper update python-devel
 wget https://bootstrap.pypa.io/get-pip.py
 python get-pip.py
+pip install --ignore-installed six
 
 # install TensorFlow
 pip install --upgrade tensorflow
