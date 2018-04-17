@@ -1,0 +1,41 @@
+# SUSE
+
+sudo -i
+
+mkdir /tf
+chmod 777 /tf
+cd /tf
+
+# pre-requisites
+zypper install git
+zypper install python
+zypper update python
+zypper install python-devel
+zypper update python-devel
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+
+# install TensorFlow
+pip install --upgrade tensorflow
+
+# install TensorFlow Serving pre-requisites
+pip install --upgrade grpcio
+pip install --upgrade tensorflow-serving-api
+git clone --recurse-submodules https://github.com/tensorflow/serving
+
+# install pre-built binary
+https://drive.google.com/drive/folders/0B_HaefMdDVd8QXZkY2tIcFpuUVU
+FTP appropriate rpm file
+rpm -i tensorflowmodelserver-x.rpm
+/usr/local/lib/modelserver/checkcpufeatures.sh
+
+# train model
+mkdir /MNIST_model
+chmod 777 /MNIST_model
+cd serving
+python tensorflow_serving/example/mnist_saved_model.py /MNIST_model
+ls /MNIST_model/1
+saved_model_cli show --dir /MNIST_model/1 --all
+
+# serve model
+/usr/local/lib/modelserver/tensorflow_model_server-x --port=9000 --model_name=mnist --model_base_path=/MNIST_model/
